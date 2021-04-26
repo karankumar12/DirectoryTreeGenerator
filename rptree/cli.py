@@ -12,11 +12,12 @@ def main():
         print("This directory does not exist.")
         sys.exit()
 
-    # if args.dir_only and args.file_only:
-    #     print("You have selected two exlusive options.")
-    #     sys.exit()
+    if args.dir_only and args.file_only:
+        print("You have selected two exlusive options.")
+        sys.exit()
 
-    tree = DirectoryTree(root_dir, dir_only= args.dir_only)
+    print(args)
+    tree = DirectoryTree(root_dir, dir_only= args.dir_only, file_only= args.file_only)
     tree.generate()
 
 def parse_cmd_line_arguments():
@@ -40,6 +41,12 @@ def parse_cmd_line_arguments():
         "--dir-only",
         action="store_true",
         help = "Generate a directory-only tree",
+    )
+    parser.add_argument(
+        "-f",
+        "--file-only",
+        action="store_true",
+        help = "Generate a file-only tree",
     )
 
     return parser.parse_args()

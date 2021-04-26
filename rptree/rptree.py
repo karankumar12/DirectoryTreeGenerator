@@ -9,8 +9,8 @@ SPACE_PREFIX = "    "
 
 
 class DirectoryTree:
-    def __init__(self, root_dir, dir_only = False):
-        self._generator = _TreeGenerator(root_dir, dir_only)
+    def __init__(self, root_dir, dir_only = False, file_only=False):
+        self._generator = _TreeGenerator(root_dir, dir_only, file_only)
 
     def generate(self):
         tree = self._generator.buildTree()
@@ -18,9 +18,10 @@ class DirectoryTree:
             print(entry)
 
 class _TreeGenerator:
-    def __init__(self, root_dir, dir_only = False):
+    def __init__(self, root_dir, dir_only = False, file_only=False):
         self.root_dir = pathlib.Path(root_dir)
         self.dir_only = dir_only
+        self.file_only = file_only
         self.tree = []
 
     def buildTree(self):
@@ -37,6 +38,8 @@ class _TreeGenerator:
         if(self.dir_only):
             entries = [entry for entry in entries if entry.is_dir()]
             return entries
+        if(self.file_only):
+            entries = [entry for entry in entries if entry.is_file()]
 
         entries= sorted(entries, key = lambda entry: entry.is_file())
         return entries
